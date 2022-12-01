@@ -96,7 +96,7 @@ function sakje(){
 
 <style>
 #productPage{
-	border: 0px solid red; width: 900px; margin: auto; padding-top: 20px;
+	width: 900px; margin: auto; padding-top: 20px;
 }
 #img{
 	text-align: center; margin-bottom: 20px;
