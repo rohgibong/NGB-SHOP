@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+
+	<select id="getSelectAll" resultType="com.ngb.ngbPortfolio.member.model.dto.MemberDTO">
+		select * from member order by memberCode desc
+	</select>
+	
+	<select id="getSelectOne" resultType="com.ngb.ngbPortfolio.member.model.dto.MemberDTO">
+		select * from member where memberCode = #{memberCode}
+	</select>
+
+	<insert id="setInsert">
+		insert into member values(
+			seq_member.nextval,
+			#{id},
+			#{passwd}, 
+			#{name}, 
+			#{phone1}, 
+			#{phone2}, 
+			#{phone3}, 
+			#{email1},
+			#{email2},
+			#{juso1},
+			#{juso2},
+			#{juso3},
+			#{juso4},
+			sysdate
+		)
+	</insert>
+	
+	<select id="getLogin" resultType="int">
+		select memberCode from member where id = #{id} and passwd = #{passwd}
+	</select>
+	
+	<select id="getIdCheck" resultType="int">
+		select memberCode from member where id = #{id}
+	</select>
+	
+	<select id="getPwCheck" resultType="int">
+		select memberCode from member where memberCode = #{memberCode} and passwd = #{passwd}
+	</select>
+	
+	<select id="getEmailCheck" resultType="int">
+		select memberCode from member where email1 = #{email1} and email2 = #{email2}
+	</select>
+	
+	<select id="getPhoneCheck" resultType="int">
+		select memberCode from member where phone1 = #{phone1} and phone2 = #{phone2} and phone3 = #{phone3}
+	</select>
+	
+	<select id="searchIdUsePhone" resultType="String">
+		select id from member where name = #{name} and phone1 = #{phone1} and phone2 = #{phone2} and phone3 = #{phone3}
+	</select>
+	
+	<select id="searchIdUseEmail" resultType="String">
+		select id from member where name = #{name} and email1 = #{email1} and email2 = #{email2}
+	</select>
+	
+	<select id="searchPwUsePhone" resultType="int">
+		select memberCode from member where id = #{id} and name = #{name} and phone1 = #{phone1} and phone2 = #{phone2} and phone3 = #{phone3}
+	</select>
+	
+	<select id="searchPwUseEmail" resultType="int">
+		select memberCode from member where id = #{id} and name = #{name} and email1 = #{email1} and email2 = #{email2}
+	</select>
+	
+	<update id="updatePw">
+		update member set passwd = #{passwd} where memberCode = #{memberCode}
+	</update>
+	
+	<update id="setUpdate">
+		update member set
+			phone1 = #{phone1},
+			phone2 = #{phone2},
+			phone3 = #{phone3},
+			email1 = #{email1},
+			email2 = #{email2},
+			juso1 = #{juso1},
+			juso2 = #{juso2},
+			juso3 = #{juso3},
+			juso4 = #{juso4}
+			where memberCode = #{memberCode}
+	</update>
+	
+	<select id="searchCartNo" resultType="com.ngb.ngbPortfolio.shop.model.dto.CartDTO">
+		select * from cart where memberCode = ${imsiCode}
+	</select>
+	
+	<select id="updateCartMemberCode">
+		update cart set memberCode = #{memberCode} where memberCode = #{imsiCode} and cartNo = #{cartNo}
+	</select>
+	
+	<delete id="deleteNotUpdate">
+		delete from cart where cartNo = ${cartNo}
+	</delete>
+	
+	<delete id="setDelete">
+		delete from member where memberCode = ${memberCode}
+	</delete>
+	
+</mapper>

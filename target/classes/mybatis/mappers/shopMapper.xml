@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shop">
+
+	<select id="getSelectAll" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select product.*, (sysdate + deliveryPeriod) arrivalDate from product order by productCode desc
+	</select>
+	
+	<select id="getSelectAllCate" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product where categoryCode = #{categoryCode} order by useable asc, productCode desc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
+	<select id="getSelectAllSearch" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product where categoryCode = #{categoryCode} and productName like '%${searchData}%' order by useable asc, productCode desc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
+	<select id="getSelectAllSearch2" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product where productName like '%${searchData}%' order by useable asc, productCode desc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
+	<select id="getSearchVendorName" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product where vendorName = #{vendorName} order by useable asc, productCode desc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
+	<select id="getTotalRecordAll" resultType="int">
+		select count(*) counter from product where categoryCode = #{categoryCode}
+	</select>
+	
+	<select id="getTotalRecordSearch" resultType="int">
+		select count(*) counter from product where categoryCode = #{categoryCode} and productName like '%${searchData}%'
+	</select>
+	
+	<select id="getTotalRecordSearch2" resultType="int">
+		select count(*) counter from product where productName like '%${searchData}%'
+	</select>
+	
+	<select id="getTotalRecordVendor" resultType="int">
+		select count(*) counter from product where vendorName = #{vendorName}
+	</select>
+	
+	<select id="getSelectOne" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select product.*, (sysdate + deliveryPeriod) arrivalDate from product where productCode = #{productCode}
+	</select>
+	
+	<select id="getSelectOneCart" resultType="com.ngb.ngbPortfolio.shop.model.dto.CartDTO">
+		select * from cart where cartNo = #{cartNo}
+	</select>
+	
+	<select id="getSelectAllCart" resultType="com.ngb.ngbPortfolio.shop.model.dto.CartDTO">
+		select * from cart where memberCode = #{memberCode} and buyOX = 'X' order by cartNo desc
+	</select>
+	
+	<select id="searchCart" resultType="int">
+		select cartNo from cart where memberCode = #{memberCode } and productCode = #{productCode} and buyOX = 'X'
+	</select>
+	
+	<update id="updateAmount">
+		update cart set productAmount = productAmount + #{productAmount} where productCode = #{productCode} and memberCode = #{memberCode} and buyOX = 'X'
+	</update>
+	
+	<insert id="setCartChuga">
+		insert into cart values(
+			seq_cart.nextval,
+			#{memberCode},
+			#{productCode},
+			#{productAmount},
+			#{buyOX},
+			sysdate
+		)
+	</insert>
+	
+	<update id="sujungAmount">
+		update cart set productAmount = #{productAmount} where cartNo = #{cartNo} and buyOX = 'X'
+	</update>
+	
+	<delete id="sakjeCartOne">
+		delete from cart where cartNo = #{cartNo} and buyOX = 'X'
+	</delete>
+	
+	<delete id="sakjeCartOne2">
+		delete from cart where cartNo = #{cartNo} and buyOX = 'O'
+	</delete>
+	
+	<delete id="sakjeCartChecked">
+		delete from cart where cartNo = ${items}
+	</delete>
+	
+	<delete id="sakjeMemberCart">
+		delete from cart where memberCode = #{memberCode}
+	</delete>
+	
+	<update id="updateBuy">
+		update cart set buyOX = 'O', regiDate = sysdate where cartNo = #{cartNo} and buyOX = 'X'
+	</update>
+	
+	<select id="getSelectAllBought" resultType="com.ngb.ngbPortfolio.shop.model.dto.CartDTO">
+		select * from cart where memberCode = #{memberCode} and buyOX = 'O' order by regiDate desc
+	</select>
+
+</mapper>

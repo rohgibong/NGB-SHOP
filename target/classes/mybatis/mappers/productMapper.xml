@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="product">
+
+	<select id="getSelectAll" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select product.*, (sysdate + deliveryPeriod) arrivalDate from product order by categoryCode asc, productCode desc 
+	</select>
+	
+	<select id="getSelectOne" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select product.*, (sysdate + deliveryPeriod) arrivalDate from product where productCode = #{productCode}
+	</select>
+	
+	<insert id="setInsert">
+		insert into product values (
+			seq_product.nextval,
+			#{productName},
+			#{productDetailName},
+			#{productPrice},
+			#{productDescription},
+			#{vendorName},
+			#{attachInfo},
+			sysdate,
+			#{useable},
+			#{categoryCode},
+			#{deliveryPeriod},
+			#{deliveryPrice},
+			#{deliveryArea}
+		)
+	</insert>
+	
+	<update id="setUpdate">
+		update product set
+		productName = #{productName},
+		productDetailName = #{productDetailName},
+		productPrice = #{productPrice},
+		productDescription = #{productDescription},
+		vendorName = #{vendorName},
+		attachInfo = #{attachInfo},
+		useable = #{useable},
+		categoryCode = #{categoryCode},
+		deliveryPeriod = #{deliveryPeriod},
+		deliveryPrice = #{deliveryPrice},
+		deliveryArea = #{deliveryArea}
+		where productCode = #{productCode}
+	</update>
+	
+	<delete id="setDelete">
+		delete from product where productCode = #{productCode}
+	</delete>
+
+
+</mapper>
