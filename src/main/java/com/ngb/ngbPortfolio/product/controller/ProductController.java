@@ -2,6 +2,7 @@ package com.ngb.ngbPortfolio.product.controller;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,9 @@ public class ProductController {
 	@RequestMapping("/list")
 	public String list(
 			Model model,
-			HttpServletRequest request
+			HttpServletRequest request,
+			@ModelAttribute ProductDTO arguDto,
+			String pageNumber
 		) throws UnknownHostException {
 		Util util = new Util();
 		String[] serverInfo = util.getServerInfo(request);
@@ -40,13 +43,51 @@ public class ProductController {
 		String folderName = serverInfo[2];
 		String fileName = serverInfo[3];
 		
-		List<ProductDTO> list = productDao.getSelectAll();
+		int pageNumber2 = util.getNumberCheck(pageNumber, 1);
+		model.addAttribute("pageNumber", pageNumber2);
+		
+		int productCounter = 0;
+		int productSize = 30;
+		int pageSize = 10;
+		int checkSearchGubun = util.getNumberCheck(arguDto.getSearchGubun(), 17);
+		
+		if(checkSearchGubun > 16) {
+			int totalRecord = productDao.getTotalRecord();
+			model.addAttribute("totalRecord", totalRecord);
+			Map<String, Integer> map = util.getPagerMap(pageNumber2, productSize, pageSize, totalRecord);
+			map.put("pageSize", pageSize);
+			model.addAttribute("map", map);
+			arguDto.setStartRecord(map.get("startRecord"));
+			arguDto.setLastRecord(map.get("lastRecord"));
+			List<ProductDTO> list = productDao.getSelectAllPage(arguDto);
+			productCounter = list.size();
+			model.addAttribute("list", list);
+		} else {
+			arguDto.setCategoryCode(checkSearchGubun);
+			int totalRecord = productDao.getTotalRecordSearch(arguDto);
+			model.addAttribute("totalRecord", totalRecord);
+			Map<String, Integer> map = util.getPagerMap(pageNumber2, productSize, pageSize, totalRecord);
+			map.put("pageSize", pageSize);
+			model.addAttribute("map", map);
+			String searchData = arguDto.getSearchData();
+			arguDto.setStartRecord(map.get("startRecord"));
+			arguDto.setLastRecord(map.get("lastRecord"));
+			List<ProductDTO> list = productDao.getSelectAllSearch(arguDto);
+			productCounter = list.size();
+			model.addAttribute("list", list);
+			model.addAttribute("searchGubun", checkSearchGubun);
+			model.addAttribute("searchData", searchData);
+		}
+		
+		
+		
+		
 		List<CategoryDTO> categoryList = categoryDao.getSelectAll();
 		
-		model.addAttribute("list", list);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("path", path);
 		model.addAttribute("ip", ip);
+		model.addAttribute("productCounter", productCounter);
 		return folderName+"/"+fileName;
 	}
 	

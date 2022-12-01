@@ -15,6 +15,7 @@
 	<img src="${path }/attach${path}/logo/ngbshop.png" width='230' height='45'>
 </a>
 </div>
+${totalRecord }건 ${pageNumber } / ${map.totalPage }
 
 <table id="table" border="1">
 	<tr>
@@ -72,9 +73,92 @@
 	
 </table>
 
-<div id="btnDiv">
+<div id="bottomDiv">
+	<form name="searchForm">
+	<select name="searchGubun" id="searchGubun">
+	
+	
+	</select>
+	&nbsp;
+	<input type="text" name="searchData" id="searchData" value="${searchData }" style="width: 150px;">
+	&nbsp;
+	<button type="button" onClick="search();" id="searchBtn">검색</button>
 	<button type="button" onClick="move('chuga', '');" id="chugaBtn">추가</button>
+	</form>
+	
 </div>
+
+<c:if test="${productCounter > 0 }">
+<div id="pageNumberDiv">
+
+<c:if test="${map.startPage > map.pageSize }">
+	<a class="nextPage" onClick="goPage('${map.startPage - map.pageSize }');">&lt;&lt;</a>
+</c:if>
+<c:if test="${map.startPage <= map.pageSize }">
+	<a class="nextPage" onClick="goPage('${map.startPage }');">&lt;&lt;</a>
+</c:if>
+<c:if test="${map.startPage != pageNumber }">
+	<a class="nextPage" onClick="goPage('${pageNumber - 1}');">&lt;</a>
+</c:if>
+<c:if test="${map.startPage == pageNumber }">
+	<a class="nextPage" onClick="goPage('${pageNumber}');">&lt;</a>
+</c:if>
+
+<c:forEach var="i" begin="${map.startPage }" end="${map.lastPage }" step="1">
+	<c:if test="${i == pageNumber }">
+		<a class="selectedNumber" onClick="goPage('${i}');">${i}</a>
+	</c:if>
+	<c:if test="${i != pageNumber }">
+		<a class="nonSelectedNumber" onClick="goPage('${i}');">${i}</a>
+	</c:if>
+</c:forEach>
+
+<c:if test="${map.lastPage != pageNumber }">
+	<a class="nextPage" onClick="goPage('${pageNumber + 1}');">&gt;</a>
+</c:if>
+<c:if test="${map.lastPage == pageNumber }">
+	<a class="nextPage" onClick="goPage('${pageNumber}');">&gt;</a>
+</c:if>
+<c:if test="${map.lastPage < map.totalPage }">
+	<a class="nextPage" onClick="goPage('${map.startPage + map.pageSize }');">&gt;&gt;</a>
+</c:if>
+<c:if test="${map.lastPage >= map.totalPage }">
+	<a class="nextPage" onClick="goPage('${map.lastPage }');">&gt;&gt;</a>
+</c:if>
+
+</div>
+</c:if>
+
+
+
+<%-- <c:choose>
+	<c:when test="${searchGubun == 'writer' }">
+		<option value="">-- 선택 --</option>
+		<option value="writer" selected>작성자</option>
+		<option value="content">내용</option>
+		<option value="writer_content">작성자+내용</option>
+	</c:when>
+	<c:when test="${searchGubun == 'content' }">
+		<option value="">-- 선택 --</option>
+		<option value="writer">작성자</option>
+		<option value="content" selected>내용</option>
+		<option value="writer_content">작성자+내용</option>
+	</c:when>
+	<c:when test="${searchGubun == 'writer_content' }">
+		<option value="">-- 선택 --</option>
+		<option value="writer">작성자</option>
+		<option value="content">내용</option>
+		<option value="writer_content" selected>작성자+내용</option>
+	</c:when>
+	<c:otherwise>
+		<option value="" selected>-- 선택 --</option>
+		<option value="writer">작성자</option>
+		<option value="content">내용</option>
+		<option value="writer_content">작성자+내용</option>
+	</c:otherwise>
+</c:choose> --%>
+
+
 
 </div>
 
@@ -94,6 +178,10 @@ function sakje(value1){
 		document.sakjeForm.submit();
 	}
 }
+function goPage(value1){
+	location.href='${path }/product/list?pageNumber='+value1;
+/* 	location.href='${path }/product/list?pageNumber='+value1+'&searchGubun=${searchGubun}&searchData=${searchData}'; */
+}
 </script>
 
 <style>
@@ -106,14 +194,49 @@ function sakje(value1){
 #table{
 	margin: auto; border-collapse: collapse; width: 1200px;
 }
-#btnDiv{
-	text-align: right; margin-top: 10px;
+#bottomDiv{
+	margin-top: 10px;
+}
+#searchGubun, #searchData, #searchBtn, #chugaBtn{
+
 }
 #chugaBtn{
 	height: 30px; width: 60px;
 	font-weight: bold; color: white;
 	background-color: #0074E9;
 	border: none; border-radius: 5px 5px;
+	float: right;
+}
+#pageNumberDiv{
+	text-align: center;
+	height: 70px;
+	line-height: 70px;
+}
+.selectedNumber{
+	padding: 5px 10px;
+	border: 1px solid #0074E9;
+	font-size: 14px; font-weight: bold;
+	color: #0074E9;
+}
+.selectedNumber:hover, .nonSelectedNumber:hover, .nextPage:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.nonSelectedNumber{
+	padding: 5px 10px;
+	font-size: 14px; font-weight: bold;
+	color: #555555;
+}
+.nextPage{
+	padding: 5px 10px;
+	background-color: #FCFCFC;
+	border: 1px solid #CCCCCC;
+	font-size: 14px; font-weight: bold;
+	color: #CCCCCC;
+}
+#searchDiv{
+	width: 500px;
+	border: 1px solid red;
 }
 
 </style>

@@ -9,6 +9,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select product.*, (sysdate + deliveryPeriod) arrivalDate from product order by categoryCode asc, productCode desc 
 	</select>
 	
+	<select id="getSelectAllPage" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product order by categoryCode asc, useable asc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
+	<select id="getSelectAllSearch" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product where categoryCode = #{categoryCode} and productName like '%${searchData}%' order by useable asc, productCode desc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
+	<select id="getSelectAllSearch2" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
+		select * from (select A.*, Rownum rnum from (
+			select product.*, (sysdate + deliveryPeriod) arrivalDate from product where productName like '%${searchData}%' order by useable asc, productCode desc
+		) A) where rnum >= #{startRecord} and rnum <![CDATA[<=]]> #{lastRecord}
+	</select>
+	
 	<select id="getSelectOne" resultType="com.ngb.ngbPortfolio.product.model.dto.ProductDTO">
 		select product.*, (sysdate + deliveryPeriod) arrivalDate from product where productCode = #{productCode}
 	</select>
@@ -50,6 +68,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="setDelete">
 		delete from product where productCode = #{productCode}
 	</delete>
-
+	
+	<select id="getTotalRecord" resultType="int">
+		select count(*) counter from product
+	</select>
+	
+	<select id="getTotalRecordSearch" resultType="int">
+		select count(*) counter from product where categoryCode = #{categoryCode} and productName like '%${searchData}%'
+	</select>
 
 </mapper>

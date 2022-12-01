@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="category">
 
 	<select id="getSelectAll" resultType="com.ngb.ngbPortfolio.category.model.dto.CategoryDTO">
-		select * from category order by categoryCode desc
+		select * from category order by categoryCode asc
 	</select>
 	
 	<select id="getSelectOne" resultType="com.ngb.ngbPortfolio.category.model.dto.CategoryDTO">

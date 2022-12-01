@@ -19,6 +19,20 @@ public class ProductDAOImpl implements ProductDAO {
 	public List<ProductDTO> getSelectAll() {
 		return sqlSession.selectList("product.getSelectAll");
 	}
+	
+	@Override
+	public List<ProductDTO> getSelectAllPage(ProductDTO paramDto) {
+		return sqlSession.selectList("product.getSelectAllPage", paramDto);
+	}
+	
+	@Override
+	public List<ProductDTO> getSelectAllSearch(ProductDTO paramDto) {
+		if(paramDto.getCategoryCode() == 0) {
+			return sqlSession.selectList("product.getSelectAllSearch2", paramDto);
+		} else {
+			return sqlSession.selectList("product.getSelectAllSearch", paramDto);
+		}
+	}
 
 	@Override
 	public ProductDTO getSelectOne(ProductDTO paramDto) {
@@ -38,6 +52,16 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public int setDelete(ProductDTO paramDto) {
 		return sqlSession.delete("product.setDelete", paramDto);
+	}
+
+	@Override
+	public int getTotalRecord() {
+		return sqlSession.selectOne("product.getTotalRecord");
+	}
+	
+	@Override
+	public int getTotalRecordSearch(ProductDTO paramDto) {
+		return sqlSession.selectOne("product.getTotalRecordSearch", paramDto);
 	}
 
 }
