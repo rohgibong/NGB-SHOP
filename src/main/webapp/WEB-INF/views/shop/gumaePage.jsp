@@ -100,7 +100,7 @@
 	</c:forEach>
 	<tr>
 		<td><img src="${path}/attach${path}/product/${imsiImg }" width='100' height='100'></td>
-		<td>
+		<td id="productNameTd">
 			<a id="productDetailName">${productDetailName }</a><br>
 			${arraivalDate }
 			<c:if test="${deliveryArea == '해외' }">
@@ -217,6 +217,9 @@ th{
 td{
 	border-bottom: 1px solid #DDDDDD;
 	padding-left: 10px;
+}
+#productNameTd{
+	width: 500px;
 }
 #productDetailName{
 	font-size: 16px;

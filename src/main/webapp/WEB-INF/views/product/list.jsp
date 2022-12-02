@@ -33,13 +33,17 @@ ${totalRecord }건 ${pageNumber } / ${map.totalPage }
 			<td colspan="8" align="center" height="200">등록된 상품이 없습니다.</td>
 		</tr>
 	</c:if>
-	
-	<c:set var="number" value="${list.size() }" />
+	<c:if test="${pageNumber == 1 }">
+		<c:set var="number" value="1" />
+	</c:if>
+	<c:if test="${pageNumber != 1 }">
+		<c:set var="number" value="${(pageNumber-1) * 30 + 1 }" />
+	</c:if>
 	<c:forEach var="productDto" items="${list }">
 		<tr align="center">
 			<td>
 				<font style="font-weight: bold;">${number }</font>
-				<c:set var="number" value="${number - 1 }" />
+				<c:set var="number" value="${number + 1 }" />
 			</td>
 			<td>
 				<a href="#" onClick="move('view', '${productDto.productCode}');">${productDto.productName }</a>
