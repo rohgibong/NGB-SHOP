@@ -76,5 +76,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getTotalRecordSearch" resultType="int">
 		select count(*) counter from product where categoryCode = #{categoryCode} and productName like '%${searchData}%'
 	</select>
+	
+	<select id="getTotalRecordSearch2" resultType="int">
+		select count(*) counter from product where productName like '%${searchData}%'
+	</select>
 
 </mapper>

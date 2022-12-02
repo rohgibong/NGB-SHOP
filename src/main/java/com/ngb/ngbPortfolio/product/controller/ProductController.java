@@ -62,6 +62,7 @@ public class ProductController {
 			List<ProductDTO> list = productDao.getSelectAllPage(arguDto);
 			productCounter = list.size();
 			model.addAttribute("list", list);
+			model.addAttribute("searchGubun", checkSearchGubun);
 		} else {
 			arguDto.setCategoryCode(checkSearchGubun);
 			int totalRecord = productDao.getTotalRecordSearch(arguDto);

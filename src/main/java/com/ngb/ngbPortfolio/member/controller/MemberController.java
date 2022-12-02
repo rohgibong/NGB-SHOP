@@ -439,7 +439,7 @@ public class MemberController {
 		Util util = new Util();
 		String randomCode = util.rand();
 		String toNumber = phone1 + phone2 + phone3;
-		//messageService.sendMessage(toNumber, randomCode); //실제 전화번호로 보내져서 개발 중 닫음
+		messageService.sendMessage(toNumber, randomCode); //실제 전화번호로 보내져서 개발 중 닫음
 		
 		return randomCode;
 	}

@@ -76,13 +76,36 @@ ${totalRecord }건 ${pageNumber } / ${map.totalPage }
 <div id="bottomDiv">
 	<form name="searchForm">
 	<select name="searchGubun" id="searchGubun">
-	
-	
+		<c:if test="${searchGubun == 17}">
+			<option value="0">전체</option>
+			<c:forEach var="categoryDto" items="${categoryList }">
+				<option value="${categoryDto.categoryCode }">${categoryDto.categoryName }</option>
+			</c:forEach>
+		</c:if>
+		<c:if test="${searchGubun != 17}">
+			<c:if test="${searchGubun == 0}">
+				<option value="0" selected>전체</option>
+			</c:if>
+			<c:if test="${searchGubun != 0}">
+				<option value="0">전체</option>
+			</c:if>
+			<c:forEach var="categoryDto" items="${categoryList }">
+			<c:if test="${searchGubun == categoryDto.categoryCode }">
+				<option value="${categoryDto.categoryCode }" selected>${categoryDto.categoryName }</option>
+			</c:if>
+			<c:if test="${searchGubun != categoryDto.categoryCode }">
+				<option value="${categoryDto.categoryCode }">${categoryDto.categoryName }</option>
+			</c:if>
+			</c:forEach>
+		</c:if>
 	</select>
 	&nbsp;
 	<input type="text" name="searchData" id="searchData" value="${searchData }" style="width: 150px;">
 	&nbsp;
 	<button type="button" onClick="search();" id="searchBtn">검색</button>
+	<c:if test="${searchGubun != 17 }">
+		<button type="button" onClick="list();" id="listBtn">목록</button>
+	</c:if>
 	<button type="button" onClick="move('chuga', '');" id="chugaBtn">추가</button>
 	</form>
 	
@@ -129,37 +152,6 @@ ${totalRecord }건 ${pageNumber } / ${map.totalPage }
 </div>
 </c:if>
 
-
-
-<%-- <c:choose>
-	<c:when test="${searchGubun == 'writer' }">
-		<option value="">-- 선택 --</option>
-		<option value="writer" selected>작성자</option>
-		<option value="content">내용</option>
-		<option value="writer_content">작성자+내용</option>
-	</c:when>
-	<c:when test="${searchGubun == 'content' }">
-		<option value="">-- 선택 --</option>
-		<option value="writer">작성자</option>
-		<option value="content" selected>내용</option>
-		<option value="writer_content">작성자+내용</option>
-	</c:when>
-	<c:when test="${searchGubun == 'writer_content' }">
-		<option value="">-- 선택 --</option>
-		<option value="writer">작성자</option>
-		<option value="content">내용</option>
-		<option value="writer_content" selected>작성자+내용</option>
-	</c:when>
-	<c:otherwise>
-		<option value="" selected>-- 선택 --</option>
-		<option value="writer">작성자</option>
-		<option value="content">내용</option>
-		<option value="writer_content">작성자+내용</option>
-	</c:otherwise>
-</c:choose> --%>
-
-
-
 </div>
 
 <form name="sakjeForm">
@@ -179,8 +171,15 @@ function sakje(value1){
 	}
 }
 function goPage(value1){
-	location.href='${path }/product/list?pageNumber='+value1;
-/* 	location.href='${path }/product/list?pageNumber='+value1+'&searchGubun=${searchGubun}&searchData=${searchData}'; */
+ 	location.href='${path }/product/list?pageNumber='+value1+'&searchGubun=${searchGubun}&searchData=${searchData}';
+}
+function search(){
+	document.searchForm.action = '${path}/product/list';
+	document.searchForm.method = 'post';
+	document.searchForm.submit();
+}
+function list(){
+	location.href='${path}/product/list'
 }
 </script>
 
@@ -196,9 +195,6 @@ function goPage(value1){
 }
 #bottomDiv{
 	margin-top: 10px;
-}
-#searchGubun, #searchData, #searchBtn, #chugaBtn{
-
 }
 #chugaBtn{
 	height: 30px; width: 60px;

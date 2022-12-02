@@ -61,7 +61,11 @@ public class ProductDAOImpl implements ProductDAO {
 	
 	@Override
 	public int getTotalRecordSearch(ProductDTO paramDto) {
-		return sqlSession.selectOne("product.getTotalRecordSearch", paramDto);
+		if(paramDto.getCategoryCode() == 0) {
+			return sqlSession.selectOne("product.getTotalRecordSearch2", paramDto);
+		} else {
+			return sqlSession.selectOne("product.getTotalRecordSearch", paramDto);
+		}
 	}
 
 }
