@@ -397,21 +397,6 @@ function sakjeSoldOut(value1){
 			}
 		}
 	});
-		/* $.ajax({
-			type: "post",
-			data: {
-					"memberCode" : value1
-				},
-			url: "${path }/shop/sakjeSoldOut",
-			success : function(result){
-				if(result > 0){
-					alert('품절된 상품을 삭제했습니다.');
-					location.reload();
-				} else{
-					alert('품절된 상품이 없습니다.');
-				}
-			}
-		}); */
 	}	
 }
 
@@ -519,10 +504,10 @@ td{
 	background-color: white;
 }
 #description1{
-	height: 60px; width: 100%;
-	line-height: 60px;
+	height: 50px; width: 100%;
 	border-bottom: 1px solid #DDDDDD;
 	background-color: white;
+	margin-top: 10px;
 }
 #description2{
 	height: 65px; width: 100%;

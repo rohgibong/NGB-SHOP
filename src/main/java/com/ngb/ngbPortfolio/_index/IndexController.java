@@ -36,8 +36,8 @@ public class IndexController {
 		String folderName = "_home";
 		String fileName = "main";
 		
-		/* int randomCode = (int)(Math.random()*15)+1; */
-		int randomCode = (int)(Math.random()*8)+1;
+		int randomCode = (int)(Math.random()*15)+1;
+//		int randomCode = (int)(Math.random()*8)+1;
 		int code = util.getNumberCheck(categoryCode, randomCode);
 		arguDto.setCategoryCode(code);
 		model.addAttribute("categoryCode", code);

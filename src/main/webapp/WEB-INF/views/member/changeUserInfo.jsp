@@ -53,7 +53,8 @@
 			<a id="hyphen">-</a>
 			<input type="text" name="phone2" id="phone2" value="${dto.phone2 }" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 			<a id="hyphen">-</a>
-			<input type="text" name="phone3" id="phone3" value="${dto.phone3 }" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br>
+			<input type="text" name="phone3" id="phone3" value="${dto.phone3 }" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+			<input type="button" onClick="phoneCheck();" value="인증번호전송" id="emailChkBtn">
 			<label id="label_phone"></label>
 		</td>
 	</tr>
@@ -181,6 +182,55 @@ function setEmail(value1){
 function changeEmail(){
 	document.DirForm.correctCode.value = 'X';
 }
+
+/* function phoneCheck(){
+	var phone1 = document.DirForm.phone1.value;
+	var phone2 = document.DirForm.phone2.value;
+	var phone3 = document.DirForm.phone3.value;
+	if(phone1=='' || phone2=='' || phone3==''){
+		$("#label_phone").html("휴대폰 번호를 입력하세요.");
+		$("#label_phone").css('color', 'red');
+		$("#label_phone").css('font-size', '8px');
+		return;
+	}
+	$.ajax({
+		type: "post",
+		data: {
+			"email1" : email1,
+			"email2" : email2
+		},
+		url: "${path }/member/emailCheck",
+		success : function(result){
+			if(result > 0){
+				$("#label_email").html("이미 사용중인 이메일입니다.");
+				$("#label_email").css('color', 'red');
+				$("#label_email").css('font-size', '8px');
+				$("#email1").focus();
+				return;
+			} else {
+				$("#label_email").html("잠시만 기다려주세요...");
+				$("#label_email").css('color', 'black');
+				$("#label_email").css('font-size', '8px');
+				$.ajax({
+					type: "post",
+					data: {
+						"email1" : email1,
+						"email2" : email2
+					},
+					url: "${path }/member/noticeMail",
+					success : function(result){
+						$("#label_email").html("인증번호를 발송했습니다.");
+						$("#label_email").css('color', 'blue');
+						$("#label_email").css('font-size', '8px');
+						$("#checkDiv").css('display', 'block');
+						$("#randomCode").val(result);
+					}
+				});
+			}
+		}
+	});
+	
+} */
 function emailCheck(){
 	var email1 = document.DirForm.email1.value;
 	var emailOption = document.DirForm.emailOption.value;
