@@ -8,8 +8,9 @@ public class CartDTO {
 	private int productCode;
 	private int productAmount;
 	private String buyOX;
+	private int commentNo;
     private Date regiDate;
-	
+    
 	public int getCartNo() {
 		return cartNo;
 	}
@@ -39,6 +40,12 @@ public class CartDTO {
 	}
 	public void setBuyOX(String buyOX) {
 		this.buyOX = buyOX;
+	}
+	public int getCommentNo() {
+		return commentNo;
+	}
+	public void setCommentNo(int commentNo) {
+		this.commentNo = commentNo;
 	}
 	public Date getRegiDate() {
 		return regiDate;

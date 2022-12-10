@@ -206,6 +206,8 @@ public class ShopController {
 		) {
 		int memberCode = Integer.parseInt(no);
 		arguDto.setMemberCode(memberCode);
+		int commentNo = 0;
+		arguDto.setCommentNo(commentNo);
 		
 		int searchResult = shopProductDao.searchCart(arguDto);
 		
@@ -230,6 +232,8 @@ public class ShopController {
 			) {
 		int memberCode = Integer.parseInt(no);
 		arguDto.setMemberCode(memberCode);
+		int commentNo = 0;
+		arguDto.setCommentNo(commentNo);
 		
 		int result = shopProductDao.searchCart(arguDto);
 		
@@ -428,6 +432,23 @@ public class ShopController {
 		shopProductDao.sakjeCartOne2(arguDto);
 		
 		return result + "";
+	}
+	
+	@RequestMapping("/commentChuga")
+	public String commentChuga(
+			Model model,
+			HttpServletRequest request
+		) throws UnknownHostException {
+		Util util = new Util();
+		String[] serverInfo = util.getServerInfo(request);
+		String path = serverInfo[0];
+		String ip = serverInfo[1];
+		String folderName = serverInfo[2];
+		String fileName = serverInfo[3];
+		
+		model.addAttribute("path", path);
+		model.addAttribute("ip", ip);
+		return folderName+"/"+fileName;
 	}
 	
 	

@@ -24,6 +24,7 @@
 			<c:set var="productDetailName" value="${productDto.productDetailName }" />
 			<c:set var="productPrice" value="${productDto.productPrice }" />
 			<c:set var="productAmount" value="${boughtDto.productAmount }" />
+			<c:set var="commentNo" value="${boughtDto.commentNo }" />
 			<c:set var="imsiArray" value="${fn:split(productDto.attachInfo, ',') }" />
 			<c:set var="imsiImg" value="${imsiArray[1] }" />
 		</c:if>
@@ -61,7 +62,12 @@
 					</div>
 				</div>
 				<button type="button" onClick="getCart('${boughtDto.productCode}', '${productAmount }', '${boughtDto.memberCode}', '${boughtDto.cartNo}');" id="getCartBtn">장바구니 담기</button>
-				<button type="button" onClick="cancelBought('${boughtDto.cartNo}', '${boughtDto.productCode}', '${productAmount }', '${boughtDto.memberCode}');" id="cancelBtn">주문 취소</button>
+				
+				<c:if test="${commentNo == 0}">
+					<button type="button" onClick="cancelBought('${boughtDto.cartNo}', '${boughtDto.productCode}', '${productAmount }', '${boughtDto.memberCode}');" id="cancelBtn">주문 취소</button>
+					<button type="button" onClick="writeComment('${boughtDto.cartNo}', '${boughtDto.productCode}', '${boughtDto.memberCode}');" id="commentBtn">리뷰 작성</button>
+				</c:if>
+				
 			</td>
 		</tr>
 	</table>
@@ -107,6 +113,12 @@ function cancelBought(value1, value2, value3, value4){
 			}
 		});
 	}
+}
+function writeComment(value1, value2, value3){
+	var cartNo = value1;
+	var productCode = value2;
+	var memberCode = value3;
+	window.open("${path}/shop/commentChuga", "commentChuga", "width=700, height=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 }
 
 function closeWin(value1){
@@ -208,7 +220,7 @@ h2, h3{
 #goCartMent{
 	font-size: 13px; color: #0074E9; font-weight: bold;
 }
-#getCartBtn, #cancelBtn{
+#getCartBtn, #cancelBtn, #commentBtn{
 	width: 130px; height: 30px;
 	border: 1px solid #DDDDDD;
 	background-color: white;
@@ -218,5 +230,10 @@ h2, h3{
 }
 #cancelBtn{
 	margin-top: 10px;
+}
+#commentBtn{
+	margin-top: 10px;
+	border: 1px solid #0074E9;
+	color: #0074E9;
 }
 </style>

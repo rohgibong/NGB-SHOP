@@ -156,6 +156,7 @@ $(document).ready(function(){
 		$('#email2').css('display', 'block');
 	}
 });
+
 function changePw(){
 	var memberCode = $("#memberCode").val();
 	var id = $("#id").val();
