@@ -73,6 +73,9 @@
 	</table>
 </c:forEach>
 </c:if>
+<input type="hidden" name="cartNo" id="cartNo">
+<input type="hidden" name="productCode" id="productCode">
+<input type="hidden" name="imsiMemberCode" id="imsiMemberCode">
 
 
 </div>
@@ -115,9 +118,9 @@ function cancelBought(value1, value2, value3, value4){
 	}
 }
 function writeComment(value1, value2, value3){
-	var cartNo = value1;
-	var productCode = value2;
-	var memberCode = value3;
+	document.getElementById("cartNo").value = value1;
+	document.getElementById("productCode").value = value2;
+	document.getElementById("imsiMemberCode").value = value3;
 	window.open("${path}/shop/commentChuga", "commentChuga", "width=700, height=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 }
 
